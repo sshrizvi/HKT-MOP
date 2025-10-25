@@ -1,0 +1,8 @@
+# Configuration for the Data Module
+
+database:
+  host: "localhost"
+  port: 3306
+  user: "root"
+  password: "62292003"
+  database: "accoding"
