@@ -31,29 +31,31 @@ def load_config(config_path: str) -> Dict:
 # Main Method
 def main():
     """Main data processing pipeline."""
-    
+
     # Loading Config
     config = load_config(CONFIG_PATH)
-    
-    
+
     # Initializing DatabaseConnector
     db_connector = DatabaseConnector(config['database'])
-    
+
     try:
         # Connecting
         if not db_connector.connect():
             logger.error("Failed to Connect to Database")
             return
         logger.info("Connected to ACCoding Successfully")
-    
+
+        # Connection Health Check
+        db_connector.validate_connection()
+
     except Exception as e:
         logger.exception(f"Error during Data Processing : {e}")
         raise
-    
+
     finally:
         # Disconnecting
         db_connector.disconnect()
-    
+
 
 # Executing Main Method
 if __name__ == "__main__":
