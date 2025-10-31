@@ -78,3 +78,5 @@
 2025-10-30 19:09:56,495 | INFO | hkt-mop.data.utils | database_connection.py | 256 | _export_in_batches |   Average speed: 13896 rows/sec
 2025-10-30 19:09:56,496 | INFO | hkt-mop.data.utils | database_connection.py | 78 | disconnect | Database Connection Closed Succesfully
 
+
+

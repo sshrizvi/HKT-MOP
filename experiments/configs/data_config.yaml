@@ -16,3 +16,11 @@ database:
     
 exports:
   raw_data_dir : "data/raw"
+
+data_paths:
+  users: "data/raw/users.csv"
+  problem_tags: "data/raw/problem_tags.csv"
+  tags: "data/raw/tags.csv"
+  submissions: "data/raw/submissions.csv"
+  contests: "data/raw/contests.csv"
+  problems: "data/raw/problems.csv"
