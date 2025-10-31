@@ -1,20 +1,20 @@
 """
 Database connection utilities for ACCoding dataset.
 Handles MySQL connection and data extraction.
+
+Author: Syed Shujaat Haider
+Project: Hierarchical Knowledge Tracing (HKT-MOP)
 """
 
-from ast import Dict, List, Tuple
+
+from typing import Dict
 import logging
-from typing import ParamSpecArgs
 from logging_config import setup_logging
-from sqlalchemy import create_engine
 import MySQLdb
 import pandas as pd
-
-
-# Setting Up Logger
-logger = logging.getLogger('hkt-mop.data.utils')
-setup_logging()
+from pathlib import Path
+from datetime import datetime
+import gc
 
 
 # DatabaseConnector Class
@@ -35,6 +35,12 @@ class DatabaseConnector():
         """
         self.config = config
         self.connection = None
+        self.cursor = None
+        self.TABLES = self.config['tables']
+
+        # Setup Logger
+        self.logger = logging.getLogger('hkt-mop.data.utils')
+        setup_logging()
 
     def connect(self):
         """Establish database connection."""
@@ -47,45 +53,23 @@ class DatabaseConnector():
                 password=self.config['password'],
                 database=self.config['database']
             )
-            logger.info("Database connection established successfully")
+            self.cursor = self.connection.cursor()
+            if self.cursor:
+                self.logger.info("Cursor Initialized Succesfully")
+            self.logger.info("Database connection established Successfully")
             return True
 
         except MySQLdb.Error as e:
-            logger.error(f'Error Connecting to Database : {e}')
+            self.logger.error(f'Error Connecting to Database : {e}')
             return False
 
     def disconnect(self):
-        """Close Database Connection."""
-
+        """Close the Cursor and then Database Connection."""
+        if self.cursor:
+            self.cursor.close()
         if self.connection:
             self.connection.close()
-        logger.info("Database Connection Closed Succesfully")
-
-    def execute_query(self, sql):
-        """Executes Only SELECT SQL Query."""
-
-        try:
-            # Check for SELECT Query
-            if sql.strip().upper().startswith('SELECT'):
-                cursor = self.connection.cursor()
-                cursor.execute(sql)
-                results = cursor.fetchall()
-                cursor.close()
-                return results
-            else:
-                logger.error('Only SELECT statements can be executed.')
-                return
-
-        except Exception as e:
-            logger.exception(f"Query execution failed: {e}")
-            raise
-
-    def get_table_schema(self, tableName: str) -> pd.DataFrame:
-        """Provides Table Schema."""
-
-        query = f"DESCRIBE {tableName};"
-        schema = pd.read_sql(query, self.connection)
-        return schema
+        self.logger.info("Database Connection Closed Succesfully")
 
     def get_table_stats(self) -> pd.Series:
         """Provides Row Count for Tables in ACCoding."""
@@ -93,19 +77,16 @@ class DatabaseConnector():
         try:
             stats = {}
 
-            # Tables in ACCoding
-            tables = ['users', 'problems', 'submissions',
-                      'tags', 'contests', 'problem_tags']
-
-            for table in tables:
+            for table in self.TABLES:
                 sql = f"SELECT COUNT(*) as count FROM {table}"
-                result = self.execute_query(sql)
+                self.cursor.execute(sql)
+                result = self.cursor.fetchall()
                 stats[table] = result[0][0]
 
             return pd.Series(stats)
 
         except Exception as e:
-            logger.exception(f"Failed to get table statistics: {e}")
+            self.logger.exception(f"Failed to get table statistics: {e}")
             raise
 
     def validate_connection(self):
@@ -113,185 +94,165 @@ class DatabaseConnector():
 
         try:
             sql = "SELECT 1"
-            result = self.execute_query(sql)
+            result = self._execute_query(sql)
 
-            if result and result[0][0] == 1:
-                logger.info("Database connection is healthy")
+            if result[0][0] == 1:
+                self.logger.info("Database connection is Healthy")
                 return True
             else:
-                logger.error("Unexpected result from health check")
+                self.logger.error("Unexpected result from Health Check")
                 return False
 
         except Exception as e:
-            logger.exception(f"Connection validation failed: {e}")
+            self.logger.exception(f"Connection validation failed: {e}")
             return False
 
-    def fetch_dataframe(self, sql: str) -> pd.DataFrame:
-        """Runs SQL Query and returns result as a DataFrame."""
+    def export_to_csv(self, table_name: str, output_dir: str = None) -> None:
+        """Export Table as CSV and save it to the Output Directory."""
+
+        row_count = self._get_row_count(table_name)
+        batch_size = self._determine_batch_size(row_count)
+        use_batching = False if batch_size is None else True
+
+        # Ensuring Output Directory
+        output_path = Path(output_dir)
+        output_path.mkdir(parents=True, exist_ok=True)
+
+        if not use_batching:
+            self._export_full(table_name, output_path, row_count)
+        else:
+            self._export_in_batches(
+                table_name, output_path, row_count, batch_size)
+
+    def _execute_query(self, sql: str):
+        """Private Helper Method for Executing Queries."""
 
         try:
-            result = pd.read_sql(sql, self.connection)
+            self.cursor.execute(sql)
+            result = self.cursor.fetchall()
             return result
         except Exception as e:
-            logger.exception(f"Failed to Fetch DataFrame : {e}")
+            self.logger.exception(f"Error Executing SQL Query : {e}")
             raise
 
-    def get_user_sequences(self, user_id=None, limit=None) -> pd.DataFrame:
-        """
-        Fetch submission sequences for a user (or all users) with problems and tags joined.
+    def _get_row_count(self, table_name: str) -> int:
+        """Returns Row Count of a Table."""
 
-        Args:
-            user_id (int, optional): Specific user ID. If None, fetches all users.
-            limit (int, optional): Limit number of submissions returned.
+        query = f"SELECT COUNT(*) FROM {table_name};"
+        result = self._execute_query(query)
+        return result[0][0]
 
-        Returns:
-            pandas.DataFrame: Submission sequences with problem and tag information
-        """
+    def _determine_batch_size(self, row_count: int) -> int:
+        """Determines Batch Size for Exporting CSV."""
 
-        # Query
-        sql = """
-        SELECT 
-            s.id AS submission_id,
-            s.creator_id AS user_id,
-            s.problem_id,
-            s.result,
-            s.lang,
-            s.score,
-            s.time_cost,
-            s.memory_cost,
-            s.code_length,
-            p.difficulty,
-            t.id AS tag_id,
-            t.content AS tag_name,
-            pt.weight AS tag_weight
-        FROM submissions s
-        LEFT JOIN problems p ON s.problem_id = p.id
-        LEFT JOIN problem_tags pt ON pt.problem_id = p.id
-        LEFT JOIN tags t ON t.id = pt.tag_id
-        """
+        SMALL_TABLE_THRESHOLD = 10**4
+        MEDIUM_TABLE_THRESHOLD = 10**5
+        LARGE_TABLE_THRESHOLD = 10**6
 
-        # Add WHERE Clause if user_id Specified
-        if user_id is not None:
-            sql += f" WHERE s.creator_id = {user_id}"
-
-        # Order by user then submission ID
-        sql += " ORDER BY s.creator_id, s.id"
-
-        # Add LIMIT
-        if limit is not None:
-            sql += f" LIMIT {limit}"
-
-        return self.fetch_dataframe(sql)
-
-    def get_submissions_with_labels(self, user_id=None, binary=True) -> pd.DataFrame:
-        """
-        Return submissions with binary or multi-class labels for KT.
-
-        Args:
-            user_id (int, optional): Specific user ID. If None, fetches all users.
-            binary (bool): If True, returns binary labels (AC=1, else 0).
-                        If False, returns multi-class outcomes (compile_error, runtime_error, accepted).
-
-        Returns:
-            pandas.DataFrame: Submissions with labeled outcomes
-        """
-
-        if binary:
-            # Binary classification: AC=1, else 0
-            sql = """
-            SELECT 
-                s.id AS submission_id,
-                s.creator_id AS user_id,
-                s.problem_id,
-                s.result,
-                CASE 
-                    WHEN s.result = 'AC' THEN 1 
-                    ELSE 0 
-                END AS correct
-            FROM submissions s
-            """
+        if row_count < SMALL_TABLE_THRESHOLD:
+            return None
+        elif row_count < MEDIUM_TABLE_THRESHOLD:
+            return 10**4
+        elif row_count < LARGE_TABLE_THRESHOLD:
+            return 50 * 10**4
         else:
-            # Multi-class outcomes for hierarchical models
-            sql = """
-            SELECT 
-                s.id AS submission_id,
-                s.creator_id AS user_id,
-                s.problem_id,
-                s.result,
-                CASE 
-                    WHEN s.result IN ('CE', 'REG') THEN 'compile_error'
-                    WHEN s.result IN ('WA', 'TLE', 'MLE', 'PE', 'OE') THEN 'runtime_error'
-                    WHEN s.result = 'AC' THEN 'accepted'
-                    ELSE 'other'
-                END AS outcome_group
-            FROM submissions s
+            return 10**5
+
+    def _export_full(self, table_name: str, output_dir: Path, row_count: int):
+        """Export Table to CSV without Batching."""
+
+        self.logger.info("=" * 60)
+        self.logger.info(f"(Without Batching) Exporting {table_name} ...")
+        self.logger.info("=" * 60)
+
+        try:
+            query = f"""
+                SELECT *
+                FROM {table_name}
             """
 
-        # Add WHERE Clause if user_id Specified
-        if user_id is not None:
-            sql += f" WHERE s.creator_id = {user_id}"
+            # Reading
+            df = pd.read_sql(query, self.connection)
 
-        # Order by user then submission ID
-        sql += " ORDER BY s.creator_id, s.id"
+            # Saving
+            output_file = output_dir / f'{table_name}.csv'
+            df.to_csv(output_file, index=False)
 
-        return self.fetch_dataframe(sql)
+            # Logging Completion
+            file_size_mb = output_file.stat().st_size / (1024 * 1024)
+            self.logger.info(f"Saved to {output_file} ({file_size_mb} MB)")
 
-    def get_problem_tags(self, problem_id) -> pd.DataFrame:
-        """
-        Retrieve all tags and optional weights for a specific problem.
+        except Exception as e:
+            self.logger.exception(f"Error Exporting {table_name} : {e}")
+            raise
 
-        Args:
-            problem_id (int): Problem ID to fetch tags for
+    def _export_in_batches(self, table_name: str, output_dir: Path, row_count: int, batch_size: int):
+        """Export Table to CSV with Batching."""
 
-        Returns:
-            pandas.DataFrame: Tags associated with the problem including weights
-        """
+        self.logger.info("=" * 60)
+        self.logger.info(f"(With Batching) Exporting {table_name} ...")
+        self.logger.info("=" * 60)
 
-        sql = f"""
-        SELECT 
-            t.id AS tag_id,
-            t.content AS tag_name,
-            pt.weight AS tag_weight
-        FROM problem_tags pt
-        JOIN tags t ON pt.tag_id = t.id
-        WHERE pt.problem_id = {problem_id}
-        ORDER BY pt.weight DESC
-        """
+        # Determine Number of Batches
+        num_batches = (row_count + batch_size - 1) // batch_size
+        self.logger.info(f"Exporting {row_count} rows in {num_batches}")
 
-        return self.fetch_dataframe(sql)
+        # Record Start Time
+        start_time = datetime.now()
 
-    def batch_extract_sequences(self, batch_size=10000, offset=0) -> pd.DataFrame:
-        """
-        Stream large datasets in batches to avoid memory overflow.
+        try:
+            first_batch = True
+            rows_exported = 0
+            
+            # Exporting Batches
+            for batch in range(num_batches):
 
-        Args:
-            batch_size (int): Number of submissions per batch
-            offset (int): Starting offset for pagination
+                # Per Batch Query
+                offset = batch * batch_size
+                batch_limit = min(batch_size, row_count - offset)
+                query = f"""
+                SELECT *
+                FROM {table_name}
+                LIMIT {batch_limit} OFFSET {offset}
+                """
 
-        Returns:
-            pandas.DataFrame: Batch of submission sequences
-        """
+                # Reading Batch
+                batch_df = pd.read_sql(query, self.connection)
+                rows_exported += batch_df.shape[0]
 
-        sql = f"""
-        SELECT 
-            s.id AS submission_id,
-            s.creator_id AS user_id,
-            s.problem_id,
-            s.result,
-            s.lang,
-            s.score,
-            s.time_cost,
-            s.memory_cost,
-            p.difficulty,
-            t.id AS tag_id,
-            t.content AS tag_name,
-            pt.weight AS tag_weight
-        FROM submissions s
-        LEFT JOIN problems p ON s.problem_id = p.id
-        LEFT JOIN problem_tags pt ON pt.problem_id = p.id
-        LEFT JOIN tags t ON t.id = pt.tag_id
-        ORDER BY s.creator_id, s.id
-        LIMIT {batch_size} OFFSET {offset}
-        """
+                # Saving Batch
+                output_file = output_dir / f'{table_name}.csv'
+                mode = 'w' if first_batch else 'a'
+                header = True if first_batch else False
+                batch_df.to_csv(output_file, mode=mode,
+                                header=header, index=False)
 
-        return self.fetch_dataframe(sql)
+                # Logging Batch Completion
+                progress_pct = (rows_exported / row_count) * 100
+                self.logger.info(
+                    f"  Batch {batch + 1}/{num_batches}: "
+                    f"{len(batch_df):,} rows | "
+                    f"Total: {rows_exported:,}/{row_count:,} ({progress_pct:.1f}%)"
+                )
+
+                # Changing Batch
+                first_batch = False
+
+                # Cleaning Memory
+                del batch_df
+                gc.collect()
+
+            elapsed = (datetime.now() - start_time).total_seconds()
+
+            # Logging Export Completion
+            file_size_mb = output_file.stat().st_size / (1024 * 1024)
+            self.logger.info(
+                f"  Exported {rows_exported:,} rows in {elapsed:.2f}s")
+            self.logger.info(
+                f"  Saved to {output_file} ({file_size_mb:.2f} MB)")
+            self.logger.info(
+                f"  Average speed: {rows_exported / elapsed:.0f} rows/sec")
+
+        except Exception as e:
+            self.logger.exception(f"Error Exporting {table_name} : {e}")
+            raise

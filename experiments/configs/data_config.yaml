@@ -6,3 +6,13 @@ database:
   user: "root"
   password: "62292003"
   database: "accoding"
+  tables:
+    - "users"
+    - "problems"
+    - "tags"
+    - "contests"
+    - "problem_tags"
+    - "submissions"
+    
+exports:
+  raw_data_dir : "data/raw"

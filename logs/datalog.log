@@ -1,0 +1,80 @@
+2025-10-30 19:05:02,705 | INFO | hkt-mop.data.utils | database_connection.py | 64 | connect | Cursor Initialized Succesfully
+2025-10-30 19:05:02,705 | INFO | hkt-mop.data.utils | database_connection.py | 65 | connect | Database connection established Successfully
+2025-10-30 19:05:02,705 | INFO | hkt-mop.data.utils | export.py | 38 | main | Connected to ACCoding Successfully
+2025-10-30 19:05:02,705 | INFO | hkt-mop.data.utils | database_connection.py | 106 | validate_connection | Database connection is Healthy
+2025-10-30 19:05:02,705 | INFO | hkt-mop.data.utils | database_connection.py | 199 | _export_in_batches | ============================================================
+2025-10-30 19:05:02,705 | INFO | hkt-mop.data.utils | database_connection.py | 200 | _export_in_batches | (With Batching) Exporting users ...
+2025-10-30 19:05:02,705 | INFO | hkt-mop.data.utils | database_connection.py | 201 | _export_in_batches | ============================================================
+2025-10-30 19:05:02,705 | INFO | hkt-mop.data.utils | database_connection.py | 206 | _export_in_batches | Exporting 27444 rows in 3
+2025-10-30 19:05:02,767 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 1/3: 10,000 rows | Total: 10,000/27,444 (36.4%)
+2025-10-30 19:05:02,827 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 2/3: 10,000 rows | Total: 20,000/27,444 (72.9%)
+2025-10-30 19:05:02,878 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 3/3: 7,444 rows | Total: 27,444/27,444 (100.0%)
+2025-10-30 19:05:02,908 | INFO | hkt-mop.data.utils | database_connection.py | 254 | _export_in_batches |   Exported 27,444 rows in 0.20s
+2025-10-30 19:05:02,909 | INFO | hkt-mop.data.utils | database_connection.py | 255 | _export_in_batches |   Saved to data\raw\users.csv (0.59 MB)
+2025-10-30 19:05:02,909 | INFO | hkt-mop.data.utils | database_connection.py | 256 | _export_in_batches |   Average speed: 135434 rows/sec
+2025-10-30 19:05:02,914 | INFO | hkt-mop.data.utils | database_connection.py | 170 | _export_full | ============================================================
+2025-10-30 19:05:02,914 | INFO | hkt-mop.data.utils | database_connection.py | 171 | _export_full | (Without Batching) Exporting problems ...
+2025-10-30 19:05:02,914 | INFO | hkt-mop.data.utils | database_connection.py | 172 | _export_full | ============================================================
+2025-10-30 19:05:02,998 | INFO | hkt-mop.data.utils | database_connection.py | 189 | _export_full | Saved to data\raw\problems.csv (3.546511650085449 MB)
+2025-10-30 19:05:03,014 | INFO | hkt-mop.data.utils | database_connection.py | 170 | _export_full | ============================================================
+2025-10-30 19:05:03,014 | INFO | hkt-mop.data.utils | database_connection.py | 171 | _export_full | (Without Batching) Exporting tags ...
+2025-10-30 19:05:03,014 | INFO | hkt-mop.data.utils | database_connection.py | 172 | _export_full | ============================================================
+2025-10-30 19:05:03,014 | INFO | hkt-mop.data.utils | database_connection.py | 189 | _export_full | Saved to data\raw\tags.csv (0.00196075439453125 MB)
+2025-10-30 19:05:03,020 | INFO | hkt-mop.data.utils | database_connection.py | 170 | _export_full | ============================================================
+2025-10-30 19:05:03,020 | INFO | hkt-mop.data.utils | database_connection.py | 171 | _export_full | (Without Batching) Exporting contests ...
+2025-10-30 19:05:03,020 | INFO | hkt-mop.data.utils | database_connection.py | 172 | _export_full | ============================================================
+2025-10-30 19:05:03,032 | INFO | hkt-mop.data.utils | database_connection.py | 189 | _export_full | Saved to data\raw\contests.csv (0.042057037353515625 MB)
+2025-10-30 19:05:03,032 | INFO | hkt-mop.data.utils | database_connection.py | 170 | _export_full | ============================================================
+2025-10-30 19:05:03,033 | INFO | hkt-mop.data.utils | database_connection.py | 171 | _export_full | (Without Batching) Exporting problem_tags ...
+2025-10-30 19:05:03,033 | INFO | hkt-mop.data.utils | database_connection.py | 172 | _export_full | ============================================================
+2025-10-30 19:05:03,045 | INFO | hkt-mop.data.utils | database_connection.py | 189 | _export_full | Saved to data\raw\problem_tags.csv (0.05854988098144531 MB)
+2025-10-30 19:05:05,280 | INFO | hkt-mop.data.utils | database_connection.py | 199 | _export_in_batches | ============================================================
+2025-10-30 19:05:05,280 | INFO | hkt-mop.data.utils | database_connection.py | 200 | _export_in_batches | (With Batching) Exporting submissions ...
+2025-10-30 19:05:05,280 | INFO | hkt-mop.data.utils | database_connection.py | 201 | _export_in_batches | ============================================================
+2025-10-30 19:05:05,280 | INFO | hkt-mop.data.utils | database_connection.py | 206 | _export_in_batches | Exporting 4046652 rows in 41
+2025-10-30 19:05:06,412 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 1/41: 100,000 rows | Total: 100,000/4,046,652 (2.5%)
+2025-10-30 19:05:07,979 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 2/41: 100,000 rows | Total: 200,000/4,046,652 (4.9%)
+2025-10-30 19:05:09,900 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 3/41: 100,000 rows | Total: 300,000/4,046,652 (7.4%)
+2025-10-30 19:05:12,455 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 4/41: 100,000 rows | Total: 400,000/4,046,652 (9.9%)
+2025-10-30 19:05:15,243 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 5/41: 100,000 rows | Total: 500,000/4,046,652 (12.4%)
+2025-10-30 19:05:18,325 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 6/41: 100,000 rows | Total: 600,000/4,046,652 (14.8%)
+2025-10-30 19:05:21,784 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 7/41: 100,000 rows | Total: 700,000/4,046,652 (17.3%)
+2025-10-30 19:05:25,665 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 8/41: 100,000 rows | Total: 800,000/4,046,652 (19.8%)
+2025-10-30 19:05:30,019 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 9/41: 100,000 rows | Total: 900,000/4,046,652 (22.2%)
+2025-10-30 19:05:35,004 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 10/41: 100,000 rows | Total: 1,000,000/4,046,652 (24.7%)
+2025-10-30 19:05:40,268 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 11/41: 100,000 rows | Total: 1,100,000/4,046,652 (27.2%)
+2025-10-30 19:05:45,599 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 12/41: 100,000 rows | Total: 1,200,000/4,046,652 (29.7%)
+2025-10-30 19:05:51,557 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 13/41: 100,000 rows | Total: 1,300,000/4,046,652 (32.1%)
+2025-10-30 19:05:57,826 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 14/41: 100,000 rows | Total: 1,400,000/4,046,652 (34.6%)
+2025-10-30 19:06:04,557 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 15/41: 100,000 rows | Total: 1,500,000/4,046,652 (37.1%)
+2025-10-30 19:06:11,884 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 16/41: 100,000 rows | Total: 1,600,000/4,046,652 (39.5%)
+2025-10-30 19:06:19,294 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 17/41: 100,000 rows | Total: 1,700,000/4,046,652 (42.0%)
+2025-10-30 19:06:26,909 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 18/41: 100,000 rows | Total: 1,800,000/4,046,652 (44.5%)
+2025-10-30 19:06:35,581 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 19/41: 100,000 rows | Total: 1,900,000/4,046,652 (47.0%)
+2025-10-30 19:06:44,532 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 20/41: 100,000 rows | Total: 2,000,000/4,046,652 (49.4%)
+2025-10-30 19:06:53,153 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 21/41: 100,000 rows | Total: 2,100,000/4,046,652 (51.9%)
+2025-10-30 19:07:02,851 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 22/41: 100,000 rows | Total: 2,200,000/4,046,652 (54.4%)
+2025-10-30 19:07:13,009 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 23/41: 100,000 rows | Total: 2,300,000/4,046,652 (56.8%)
+2025-10-30 19:07:21,483 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 24/41: 100,000 rows | Total: 2,400,000/4,046,652 (59.3%)
+2025-10-30 19:07:28,732 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 25/41: 100,000 rows | Total: 2,500,000/4,046,652 (61.8%)
+2025-10-30 19:07:37,058 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 26/41: 100,000 rows | Total: 2,600,000/4,046,652 (64.3%)
+2025-10-30 19:07:44,854 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 27/41: 100,000 rows | Total: 2,700,000/4,046,652 (66.7%)
+2025-10-30 19:07:53,266 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 28/41: 100,000 rows | Total: 2,800,000/4,046,652 (69.2%)
+2025-10-30 19:08:01,804 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 29/41: 100,000 rows | Total: 2,900,000/4,046,652 (71.7%)
+2025-10-30 19:08:10,105 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 30/41: 100,000 rows | Total: 3,000,000/4,046,652 (74.1%)
+2025-10-30 19:08:19,397 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 31/41: 100,000 rows | Total: 3,100,000/4,046,652 (76.6%)
+2025-10-30 19:08:27,617 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 32/41: 100,000 rows | Total: 3,200,000/4,046,652 (79.1%)
+2025-10-30 19:08:37,402 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 33/41: 100,000 rows | Total: 3,300,000/4,046,652 (81.5%)
+2025-10-30 19:08:47,921 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 34/41: 100,000 rows | Total: 3,400,000/4,046,652 (84.0%)
+2025-10-30 19:08:57,495 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 35/41: 100,000 rows | Total: 3,500,000/4,046,652 (86.5%)
+2025-10-30 19:09:07,082 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 36/41: 100,000 rows | Total: 3,600,000/4,046,652 (89.0%)
+2025-10-30 19:09:16,629 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 37/41: 100,000 rows | Total: 3,700,000/4,046,652 (91.4%)
+2025-10-30 19:09:26,386 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 38/41: 100,000 rows | Total: 3,800,000/4,046,652 (93.9%)
+2025-10-30 19:09:36,251 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 39/41: 100,000 rows | Total: 3,900,000/4,046,652 (96.4%)
+2025-10-30 19:09:46,569 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 40/41: 100,000 rows | Total: 4,000,000/4,046,652 (98.8%)
+2025-10-30 19:09:56,457 | INFO | hkt-mop.data.utils | database_connection.py | 237 | _export_in_batches |   Batch 41/41: 46,652 rows | Total: 4,046,652/4,046,652 (100.0%)
+2025-10-30 19:09:56,495 | INFO | hkt-mop.data.utils | database_connection.py | 254 | _export_in_batches |   Exported 4,046,652 rows in 291.21s
+2025-10-30 19:09:56,495 | INFO | hkt-mop.data.utils | database_connection.py | 255 | _export_in_batches |   Saved to data\raw\submissions.csv (1212.19 MB)
+2025-10-30 19:09:56,495 | INFO | hkt-mop.data.utils | database_connection.py | 256 | _export_in_batches |   Average speed: 13896 rows/sec
+2025-10-30 19:09:56,496 | INFO | hkt-mop.data.utils | database_connection.py | 78 | disconnect | Database Connection Closed Succesfully
+

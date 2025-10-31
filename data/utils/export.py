@@ -1,13 +1,15 @@
 """
-Main script for processing ACCoding dataset from MySQL database.
+Main Script for Exporting all Tables from ACCoding
+MySQL Database using the DatabaseConnector Class.
+
+Author : Syed Shujaat Haider
 """
 
 
 import logging
-from ast import Dict
-import yaml
 from data.utils.database_connection import DatabaseConnector
 from logging_config import setup_logging
+from data.utils.utils import load_config
 
 
 # Setting Up Logger
@@ -19,20 +21,9 @@ setup_logging()
 CONFIG_PATH = "experiments/configs/data_config.yaml"
 
 
-# Utilities
-def load_config(config_path: str) -> Dict:
-    """Load configuration from YAML file."""
-
-    with open(config_path, 'r') as f:
-        config = yaml.safe_load(f)
-    return config
-
-
-# Main Method
 def main():
-    """Main data processing pipeline."""
 
-    # Loading Config
+    # Load Database Configuration
     config = load_config(CONFIG_PATH)
 
     # Initializing DatabaseConnector
@@ -48,8 +39,16 @@ def main():
         # Connection Health Check
         db_connector.validate_connection()
 
+        # Loading TABLES
+        TABLES = config['database']['tables']
+
+        # Exporting Tables
+        for table in TABLES:
+            db_connector.export_to_csv(
+                table_name=table, output_dir=config['exports']['raw_data_dir'])
+
     except Exception as e:
-        logger.exception(f"Error during Data Processing : {e}")
+        logger.exception(f"Error during Data Exporting : {e}")
         raise
 
     finally:
@@ -58,5 +57,5 @@ def main():
 
 
 # Executing Main Method
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
