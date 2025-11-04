@@ -26,21 +26,8 @@ class SubsetSelector:
                  contests_df: Optional[pd.DataFrame] = None,
                  users_df: Optional[pd.DataFrame] = None,
                  logger: Optional[logging.Logger] = None):
-        """
-        Initialize SubsetSelector with ACcoding dataset tables.
+        """Initialize SubsetSelector with ACcoding dataset tables."""
         
-        Parameters:
-        -----------
-        submissions_df : DataFrame with columns [id, lang, result, score, time_cost, memory_cost, 
-                         code_length, detail, creator_id, problem_id, contest_id]
-        problems_df : DataFrame with columns [id, access_level, test_setting, difficulty, 
-                      updated_at, creator_id]
-        problem_tags_df : DataFrame with columns [tag_id, problem_id, weight]
-        tags_df : DataFrame with columns [id, content]
-        contests_df : Optional DataFrame with columns [id, start_time, end_time, access_level, updated_at]
-        users_df : Optional DataFrame with columns [id, last_login]
-        logger : Optional logger instance. If None, creates a default logger.
-        """
         # Setup logger
         self.logger = logging.getLogger('hkt-mop.data.utils')
         setup_logging()
@@ -69,6 +56,7 @@ class SubsetSelector:
         
     def _validate_schema(self):
         """Validate that DataFrames have required columns."""
+        
         self.logger.debug("Validating schema...")
         
         required_cols = {
@@ -95,6 +83,7 @@ class SubsetSelector:
     
     def _prepare_enriched_submissions(self):
         """Merge submissions with problems and tags for efficient analysis."""
+        
         self.logger.info("Preparing enriched submissions dataset...")
         
         initial_count = len(self.submissions)
@@ -138,18 +127,8 @@ class SubsetSelector:
         self.logger.debug(f"Daily submissions: {daily_count} ({daily_count/len(self.enriched)*100:.2f}%)")
         
     def select_by_id_range(self, start_id: int, end_id: int) -> 'SubsetSelector':
-        """
-        Create a new SubsetSelector for a specific submission ID range.
+        """Creates a new SubsetSelector for a specific submission ID range."""
         
-        Parameters:
-        -----------
-        start_id : Minimum submission ID (inclusive)
-        end_id : Maximum submission ID (inclusive)
-        
-        Returns:
-        --------
-        SubsetSelector instance for the specified range
-        """
         self.logger.info(f"Selecting subset by ID range: [{start_id}, {end_id}]")
         
         subset_submissions = self.submissions[
@@ -165,7 +144,7 @@ class SubsetSelector:
         relevant_contests = subset_submissions['contest_id'].dropna().unique()
         
         self.logger.debug(f"Relevant entities - Problems: {len(relevant_problems)}, "
-                         f"Users: {len(relevant_users)}, Contests: {len(relevant_contests)}")
+                          f"Users: {len(relevant_users)}, Contests: {len(relevant_contests)}")
         
         subset_problems = self.problems[self.problems['id'].isin(relevant_problems)]
         subset_problem_tags = self.problem_tags[self.problem_tags['problem_id'].isin(relevant_problems)]
@@ -204,6 +183,7 @@ class SubsetSelector:
         - hierarchical_balance: Compilation/Execution/Accept proportions
         - balance_score: Quality score (0-1, higher is better)
         """
+        
         self.logger.info("Assessing feedback distribution...")
         
         result_counts = self.submissions['result'].value_counts()
@@ -265,6 +245,7 @@ class SubsetSelector:
         --------
         Dictionary containing student engagement metrics and quality score
         """
+        
         self.logger.info("Assessing student engagement...")
         self.logger.debug(f"Quality criteria - Min submissions: {min_submissions}, Min problems: {min_problems}")
         
