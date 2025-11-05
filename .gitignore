@@ -2,6 +2,12 @@ __pycache__/
 *.pyc
 .ipynb_checkpoints/
 .env
-*.csv
+
+# Raw Data
+data/raw/
+
+# Processed Data
+data/processed/*.pkl
+
+# Logs
 logs/
-*.log
