@@ -1,0 +1,46 @@
+version: v1.0.0
+random_seed: 42
+data:
+  raw_dir: data/raw
+  processed_dir: data/processed
+  submissions_file: submissions.csv
+  problems_file: problems.csv
+  problem_tags_file: problem_tags.csv
+  tags_file: tags.csv
+filtering:
+  submission_id_min: 2284
+  submission_id_max: 502284
+  min_submissions_per_student: 20
+  max_sequence_length: 200
+splitting:
+  train_ratio: 0.7
+  val_ratio: 0.15
+  test_ratio: 0.15
+  split_by: student
+domain_shift:
+  enabled: True
+  train_on: daily
+  test_on: contest
+outcomes:
+  binary_mapping:
+    AC: 1
+    default: 0
+  multi_outcome_groups:
+    accepted:
+    - AC
+    compile_error:
+    - CE
+    - REG
+    runtime_error:
+    - WA
+    - TLE
+    - MLE
+    - RE
+    - PE
+    - OE
+    other:
+    - WT
+    - JG
+    - IFNR
+    - OFNR
+    - EFNR

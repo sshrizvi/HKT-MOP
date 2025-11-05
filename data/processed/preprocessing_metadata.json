@@ -1,0 +1,234 @@
+{
+  "preprocessing_version": "v1.0.0",
+  "timestamp": "2025-11-06T00:25:07.049872",
+  "config_hash": "25b69ab0",
+  "input_data": {
+    "submissions_file": "data/raw\\submissions.csv",
+    "total_submissions": 4046652,
+    "unique_students": 23197,
+    "unique_problems": 4336
+  },
+  "filtering": {
+    "id_range": [
+      2284,
+      502284
+    ],
+    "submissions_after_filter": 499731,
+    "students_after_filter": 2744
+  },
+  "sequences": {
+    "total_students": 1759,
+    "total_sequences": 244773,
+    "avg_sequence_length": 139.15463331438318,
+    "max_sequence_length": 200
+  },
+  "splits": {
+    "standard": {
+      "train_sequences": 172808,
+      "val_sequences": 35692,
+      "test_sequences": 36273,
+      "train_students": 1231,
+      "val_students": 264,
+      "test_students": 264
+    },
+    "domain": {
+      "train_sequences": 180621,
+      "val_sequences": 38099,
+      "test_sequences": 38357,
+      "train_students": 1204,
+      "val_students": 258,
+      "test_students": 258
+    }
+  },
+  "statistics": {
+    "standard": {
+      "train": {
+        "total_submissions": 172808,
+        "unique_students": 1231,
+        "unique_problems": 798,
+        "outcome_distribution": {
+          "WA": 0.40234827091338365,
+          "AC": 0.35207282070274526,
+          "TLE": 0.08912203138743577,
+          "CE": 0.06911138373223462,
+          "REG": 0.04186148789407898,
+          "PE": 0.033268135734456736,
+          "REP": 0.004768297763992408,
+          "MLE": 0.004050738391741123,
+          "OE": 0.0033563260960140736,
+          "IFNR": 4.050738391741123e-05
+        },
+        "binary_distribution": {
+          "0": 0.6479271792972547,
+          "1": 0.35207282070274526
+        },
+        "outcome_group_distribution": {
+          "runtime_error": 0.5321455025230314,
+          "accepted": 0.35207282070274526,
+          "compile_error": 0.1109728716263136,
+          "other": 0.004808805147909819
+        },
+        "avg_sequence_length": 140.38017871649066,
+        "median_sequence_length": 164.0,
+        "min_sequence_length": 20,
+        "max_sequence_length": 200
+      },
+      "val": {
+        "total_submissions": 35692,
+        "unique_students": 264,
+        "unique_problems": 629,
+        "outcome_distribution": {
+          "WA": 0.40625350218536366,
+          "AC": 0.348061190182674,
+          "TLE": 0.08354813403563824,
+          "CE": 0.07343382270536815,
+          "REG": 0.046032724420038106,
+          "PE": 0.03303261235010647,
+          "REP": 0.003754342709850947,
+          "MLE": 0.00361425529530427,
+          "OE": 0.0022133811498374987,
+          "IFNR": 5.603496581867085e-05
+        },
+        "binary_distribution": {
+          "0": 0.651938809817326,
+          "1": 0.348061190182674
+        },
+        "outcome_group_distribution": {
+          "runtime_error": 0.5286618850162501,
+          "accepted": 0.348061190182674,
+          "compile_error": 0.11946654712540625,
+          "other": 0.0038103776756696177
+        },
+        "avg_sequence_length": 135.1969696969697,
+        "median_sequence_length": 160.0,
+        "min_sequence_length": 20,
+        "max_sequence_length": 200
+      },
+      "test": {
+        "total_submissions": 36273,
+        "unique_students": 264,
+        "unique_problems": 619,
+        "outcome_distribution": {
+          "WA": 0.39891930637113004,
+          "AC": 0.35103244837758113,
+          "TLE": 0.0963250902875417,
+          "CE": 0.07010724230143633,
+          "REG": 0.0410498166680451,
+          "PE": 0.031897003280677086,
+          "REP": 0.0046591128387505855,
+          "MLE": 0.0030601273674634023,
+          "OE": 0.0027844402172414744,
+          "IFNR": 0.0001654122901331569
+        },
+        "binary_distribution": {
+          "0": 0.6489675516224189,
+          "1": 0.35103244837758113
+        },
+        "outcome_group_distribution": {
+          "runtime_error": 0.5329859675240537,
+          "accepted": 0.35103244837758113,
+          "compile_error": 0.11115705896948143,
+          "other": 0.004824525128883743
+        },
+        "avg_sequence_length": 137.39772727272728,
+        "median_sequence_length": 159.5,
+        "min_sequence_length": 21,
+        "max_sequence_length": 200
+      }
+    },
+    "domain_shift": {
+      "train": {
+        "total_submissions": 180621,
+        "unique_students": 1204,
+        "unique_problems": 807,
+        "outcome_distribution": {
+          "WA": 0.4049861311807597,
+          "AC": 0.3521849618815088,
+          "TLE": 0.09199373273318164,
+          "CE": 0.06478205745732778,
+          "REG": 0.04145697344162639,
+          "PE": 0.03299727052779024,
+          "REP": 0.004783496935572276,
+          "MLE": 0.0037038882521965885,
+          "OE": 0.003028440768238466,
+          "IFNR": 8.304682179812978e-05
+        },
+        "binary_distribution": {
+          "0": 0.6478150381184912,
+          "1": 0.3521849618815088
+        },
+        "outcome_group_distribution": {
+          "runtime_error": 0.5367094634621666,
+          "accepted": 0.3521849618815088,
+          "compile_error": 0.10623903089895416,
+          "other": 0.004866543757370405
+        },
+        "avg_sequence_length": 150.0174418604651,
+        "median_sequence_length": 197.0,
+        "min_sequence_length": 20,
+        "max_sequence_length": 200
+      },
+      "val": {
+        "total_submissions": 38099,
+        "unique_students": 258,
+        "unique_problems": 633,
+        "outcome_distribution": {
+          "WA": 0.40581117614635553,
+          "AC": 0.35457623559673485,
+          "TLE": 0.08750885850022311,
+          "CE": 0.06496233496942178,
+          "REG": 0.04112968844326623,
+          "PE": 0.03354418751148324,
+          "REP": 0.004645791228116224,
+          "OE": 0.004094595658678706,
+          "MLE": 0.00372713194572036
+        },
+        "binary_distribution": {
+          "0": 0.6454237644032652,
+          "1": 0.35457623559673485
+        },
+        "outcome_group_distribution": {
+          "runtime_error": 0.534685949762461,
+          "accepted": 0.35457623559673485,
+          "compile_error": 0.106092023412688,
+          "other": 0.004645791228116224
+        },
+        "avg_sequence_length": 147.6705426356589,
+        "median_sequence_length": 197.0,
+        "min_sequence_length": 20,
+        "max_sequence_length": 200
+      },
+      "test": {
+        "total_submissions": 38357,
+        "unique_students": 258,
+        "unique_problems": 652,
+        "outcome_distribution": {
+          "WA": 0.3981020413483849,
+          "AC": 0.350731287639805,
+          "TLE": 0.08355710822014235,
+          "CE": 0.08100216388142972,
+          "REG": 0.043903329248898504,
+          "PE": 0.03125896185833094,
+          "REP": 0.004875250932033267,
+          "OE": 0.003363141017284981,
+          "MLE": 0.003102432411293897,
+          "IFNR": 0.00010428344239643351
+        },
+        "binary_distribution": {
+          "0": 0.649268712360195,
+          "1": 0.350731287639805
+        },
+        "outcome_group_distribution": {
+          "runtime_error": 0.5193836848554371,
+          "accepted": 0.350731287639805,
+          "compile_error": 0.12490549313032823,
+          "other": 0.0049795343744297
+        },
+        "avg_sequence_length": 148.6705426356589,
+        "median_sequence_length": 180.0,
+        "min_sequence_length": 21,
+        "max_sequence_length": 200
+      }
+    }
+  }
+}
