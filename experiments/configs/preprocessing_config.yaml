@@ -3,6 +3,7 @@ random_seed: 42
 data:
   raw_dir: data/raw
   processed_dir: data/processed
+  dkt_format_dir: data/processed/dkt_format
   submissions_file: submissions.csv
   problems_file: problems.csv
   problem_tags_file: problem_tags.csv

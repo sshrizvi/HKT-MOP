@@ -1,7 +1,7 @@
 {
   "preprocessing_version": "v1.0.0",
-  "timestamp": "2025-11-06T00:25:07.049872",
-  "config_hash": "25b69ab0",
+  "timestamp": "2025-11-09T19:11:46.313599",
+  "config_hash": "23390b37",
   "input_data": {
     "submissions_file": "data/raw\\submissions.csv",
     "total_submissions": 4046652,
@@ -20,7 +20,27 @@
     "total_students": 1759,
     "total_sequences": 244773,
     "avg_sequence_length": 139.15463331438318,
-    "max_sequence_length": 200
+    "max_sequence_length": 200,
+    "num_outcomes": 10,
+    "num_outcome_groups": 4,
+    "outcome_distribution": {
+      "WA": 98499,
+      "AC": 85997,
+      "TLE": 21877,
+      "CE": 17107,
+      "REG": 10366,
+      "PE": 8085,
+      "REP": 1127,
+      "MLE": 940,
+      "OE": 760,
+      "IFNR": 15
+    },
+    "outcome_group_distribution": {
+      "runtime_error": 130161,
+      "accepted": 85997,
+      "compile_error": 27473,
+      "other": 1142
+    }
   },
   "splits": {
     "standard": {
