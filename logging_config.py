@@ -34,6 +34,14 @@ LOGGING = {
             "filename": "logs/preprocessing_log.log",
             "encoding": "utf-8",
             "mode": "a"
+        },
+        "models_file": {
+            "class": "logging.FileHandler",
+            "level": "DEBUG",
+            "formatter": "detailed",
+            "filename": "logs/models_log.log",
+            "encoding": "utf-8",
+            "mode": "a"
         }
     },
 
@@ -48,6 +56,11 @@ LOGGING = {
         "hkt-mop.preprocessing": {
             "level": "DEBUG",
             "handlers": ["preprocessing_file"],
+            "propagate": True
+        },
+        "hkt-mop.models": {
+            "level": "DEBUG",
+            "handlers": ["models_file"],
             "propagate": True
         }
     }
