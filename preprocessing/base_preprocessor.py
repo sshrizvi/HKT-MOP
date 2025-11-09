@@ -173,18 +173,15 @@ class BasePreprocessor:
         Returns:
             DataFrame with sequences grouped by student.
         """
-
         self.logger.info("Constructing student sequences...")
 
-        # Critical: Use submission 'id' for temporal ordering (auto-increment proxy)
-        # ACcoding schema lacks timestamp, so id serves as sequence order
+        # Critical: Use submission 'id' for temporal ordering
         submissions_df = submissions_df.sort_values(['creator_id', 'id'])
 
         # Filter students with minimum submission threshold
         min_subs = self.config["filtering"]["min_submissions_per_student"]
         student_counts = submissions_df.groupby('creator_id').size()
         valid_students = student_counts[student_counts >= min_subs].index
-
         submissions_df = submissions_df[submissions_df['creator_id'].isin(
             valid_students)].copy()
 
@@ -205,6 +202,21 @@ class BasePreprocessor:
         submissions_df['outcome_group'] = submissions_df['result'].apply(
             self._map_outcome_group)
 
+        # Create multiclass mappings
+        self._create_outcome_mappings(submissions_df)
+
+        # Add numeric multiclass labels
+        submissions_df['multiclass_label'] = submissions_df['result'].map(
+            self.outcome_to_idx)
+        self.logger.info(
+            f"Created multiclass labels: {self.num_outcomes} unique outcomes")
+
+        # Add numeric outcome group labels
+        submissions_df['outcome_group_label'] = submissions_df['outcome_group'].map(
+            self.outcome_group_to_idx)
+        self.logger.info(
+            f"Created outcome group labels: {self.num_outcome_groups} groups")
+
         self.logger.info(
             f"Constructed sequences with max length {max_seq_len}")
 
@@ -212,13 +224,104 @@ class BasePreprocessor:
             "total_students": int(len(valid_students)),
             "total_sequences": len(submissions_df),
             "avg_sequence_length": float(submissions_df.groupby('creator_id').size().mean()),
-            "max_sequence_length": max_seq_len
+            "max_sequence_length": max_seq_len,
+            # NEW: Add multiclass metadata
+            "num_outcomes": self.num_outcomes,
+            "num_outcome_groups": self.num_outcome_groups,
+            "outcome_distribution": submissions_df['result'].value_counts().to_dict(),
+            "outcome_group_distribution": submissions_df['outcome_group'].value_counts().to_dict()
         }
 
         return submissions_df
 
+    def _create_outcome_mappings(self, submissions_df: pd.DataFrame):
+        """
+        Create mappings for multiclass outcome labels.
+
+        Args:
+            submissions_df: DataFrame with 'result' and 'outcome_group' columns
+        """
+        # Create outcome to index mapping (all possible results)
+        unique_outcomes = sorted(submissions_df['result'].unique())
+        self.outcome_to_idx = {outcome: idx for idx,
+                               outcome in enumerate(unique_outcomes)}
+        self.idx_to_outcome = {idx: outcome for outcome,
+                               idx in self.outcome_to_idx.items()}
+        self.num_outcomes = len(unique_outcomes)
+
+        # Create outcome group to index mapping
+        unique_groups = sorted(submissions_df['outcome_group'].unique())
+        self.outcome_group_to_idx = {
+            group: idx for idx, group in enumerate(unique_groups)}
+        self.idx_to_outcome_group = {
+            idx: group for group, idx in self.outcome_group_to_idx.items()}
+        self.num_outcome_groups = len(unique_groups)
+
+        self.logger.info(f"Outcome mappings created:")
+        self.logger.info(f"  - Outcomes: {self.outcome_to_idx}")
+        self.logger.info(f"  - Outcome groups: {self.outcome_group_to_idx}")
+
+    def save_processed_data(self, splits: Dict[str, pd.DataFrame],
+                            output_dir: Optional[str] = None):
+        """
+        Save preprocessed data to disk.
+
+        Args:
+            splits: Dictionary of train/val/test dataframes
+            output_dir: Output directory (defaults to config)
+        """
+        if output_dir is None:
+            output_dir = self.config["data"]["processed_dir"]
+
+        os.makedirs(output_dir, exist_ok=True)
+        self.logger.info(f"Saving processed data to {output_dir}...")
+
+        # Save each split
+        for split_type, split in splits.items():
+            for split_name, split_df in split.items():
+                output_path = os.path.join(
+                    output_dir, f"{split_name + '_' + split_type}.pkl")
+                split_df.to_pickle(output_path)
+                self.logger.info(
+                    f"Saved {split_name + '_' + split_type} split to {output_path}")
+
+        # Save outcome mappings for multiclass models
+        mappings = {
+            'outcome_to_idx': self.outcome_to_idx,
+            'idx_to_outcome': self.idx_to_outcome,
+            'num_outcomes': self.num_outcomes,
+            'outcome_group_to_idx': self.outcome_group_to_idx,
+            'idx_to_outcome_group': self.idx_to_outcome_group,
+            'num_outcome_groups': self.num_outcome_groups
+        }
+
+        mappings_path = os.path.join(output_dir, "outcome_mappings.json")
+        with open(mappings_path, 'w') as f:
+            json.dump(mappings, f, indent=2)
+        self.logger.info(f"Saved outcome mappings to {mappings_path}")
+
+        # Save metadata as JSON
+        metadata_path = os.path.join(output_dir, "preprocessing_metadata.json")
+        with open(metadata_path, 'w') as f:
+            json.dump(self.metadata, f, indent=2, default=str)
+        self.logger.info(f"Saved metadata to {metadata_path}")
+
+        # Save statistics as CSV
+        stats_rows = []
+        for split_type, split_type_stats in self.metadata["statistics"].items():
+            for split_name, split_stats in split_type_stats.items():
+                row = {"split": f'{split_name + '_' + split_type}'}
+                row.update(split_stats)
+                stats_rows.append(row)
+
+        stats_df = pd.DataFrame(stats_rows)
+        stats_path = os.path.join(output_dir, "preprocessing_statistics.csv")
+        stats_df.to_csv(stats_path, index=False)
+        self.logger.info(f"Saved statistics to {stats_path}")
+
     def _map_outcome_group(self, result: str) -> str:
         """Map result to hierarchical outcome group."""
+        
         outcome_groups = self.config["outcomes"]["multi_outcome_groups"]
 
         for group_name, results in outcome_groups.items():
@@ -296,8 +399,7 @@ class BasePreprocessor:
 
         # Domain shift split (if enabled)
         if self.config["domain_shift"]["enabled"]:
-            splits['domain_shift'] = self._create_domain_shift_split(
-                sequences_df)
+            splits['domain_shift'] = self._create_domain_shift_split(sequences_df)
 
         return splits
 
@@ -307,7 +409,6 @@ class BasePreprocessor:
 
         Args:
             sequences_df: Complete sequences dataframe
-            train_students: Students used in training
 
         Returns:
             Domain shift test dataframe
@@ -322,10 +423,8 @@ class BasePreprocessor:
         test_ratio = split_config["test_ratio"]
 
         # Filter Daily Submissions
-        daily_unique_students = sequences_df[sequences_df['contest_id'].isna(
-        )]['creator_id'].unique()
-        contests_unique_students = sequences_df[sequences_df['contest_id'].notna(
-        )]['creator_id'].unique()
+        daily_unique_students = sequences_df[sequences_df['contest_id'].isna()]['creator_id'].unique()
+        contests_unique_students = sequences_df[sequences_df['contest_id'].notna()]['creator_id'].unique()
 
         # Train & Validation Splits
         train_students, val_students = train_test_split(
