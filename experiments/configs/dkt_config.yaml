@@ -1,0 +1,21 @@
+# DKT Model Training Configuration
+
+version: "1.0.0"
+
+data:
+  dkt_format_dir: "data/processed/dkt_format"
+  
+model:
+  hidden_dim: 200
+  num_layers: 1
+  dropout: 0.2
+
+training:
+  batch_size: 32
+  num_epochs: 100
+  learning_rate: 0.001
+  weight_decay: 0.00001
+  early_stopping_patience: 15
+  results_dir: "experiments/results/dkt"
+  
+random_seed: 42
