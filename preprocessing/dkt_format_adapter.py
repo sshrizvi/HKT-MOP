@@ -395,6 +395,20 @@ def collate_fn(batch: List[Tuple]) -> Tuple[torch.Tensor, torch.Tensor, torch.Te
     Returns:
         Padded batches of inputs, targets, labels, and sequence lengths
     """
+    
+    # Filter out any empty sequences (seq_len == 0)
+    batch = [item for item in batch if item[3] > 0]
+    
+    # Handle case where entire batch is filtered out
+    if len(batch) == 0:
+        # Return dummy tensors with proper shapes
+        return (
+            torch.zeros(1, 1, 1),  # inputs_padded
+            torch.zeros(1, 1, 1),  # targets_padded
+            torch.zeros(1, 1, dtype=torch.long),  # labels_padded
+            torch.zeros(1, dtype=torch.long)  # seq_lens
+        )
+    
     inputs_list, targets_list, labels_list, seq_lens = zip(*batch)
     
     # Get max sequence length in batch

@@ -442,12 +442,21 @@ class BasePreprocessor:
 
         # Create Splits
         train_df = sequences_df[sequences_df['creator_id'].isin(
-            train_students)].copy()
+            train_students) & sequences_df['contest_id'].isna()].copy()
         val_df = sequences_df[sequences_df['creator_id'].isin(
-            val_students)].copy()
+            val_students) & sequences_df['contest_id'].isna()].copy()
         test_df = sequences_df[sequences_df['creator_id'].isin(
-            test_students)].copy()
-
+            test_students) & sequences_df['contest_id'].notna()].copy()
+        
+        # Check for Valid Domain Shift Split
+        if train_df['contest_id'].notna().sum() != 0:
+            self.logger.warning(f"Training Split Contains Contest Submissions.")
+        if val_df['contest_id'].notna().sum() != 0:
+            self.logger.warning(f"Validation Split Contains Contest Submissions.")
+        if test_df['contest_id'].isna().sum() != 0:
+            self.logger.warning(f"Testing Split Contains Daily Submissions.")
+            
+        # Store Splits
         splits = {
             'train': train_df,
             'val': val_df,

@@ -1,6 +1,6 @@
 {
   "preprocessing_version": "v1.0.0",
-  "timestamp": "2025-11-09T19:11:46.313599",
+  "timestamp": "2025-11-11T21:28:55.179893",
   "config_hash": "23390b37",
   "input_data": {
     "submissions_file": "data/raw\\submissions.csv",
@@ -52,9 +52,9 @@
       "test_students": 264
     },
     "domain": {
-      "train_sequences": 180621,
-      "val_sequences": 38099,
-      "test_sequences": 38357,
+      "train_sequences": 51530,
+      "val_sequences": 11376,
+      "test_sequences": 29860,
       "train_students": 1204,
       "val_students": 258,
       "test_students": 258
@@ -158,95 +158,94 @@
     },
     "domain_shift": {
       "train": {
-        "total_submissions": 180621,
+        "total_submissions": 51530,
         "unique_students": 1204,
-        "unique_problems": 807,
+        "unique_problems": 751,
         "outcome_distribution": {
-          "WA": 0.4049861311807597,
-          "AC": 0.3521849618815088,
-          "TLE": 0.09199373273318164,
-          "CE": 0.06478205745732778,
-          "REG": 0.04145697344162639,
-          "PE": 0.03299727052779024,
-          "REP": 0.004783496935572276,
-          "MLE": 0.0037038882521965885,
-          "OE": 0.003028440768238466,
-          "IFNR": 8.304682179812978e-05
+          "WA": 0.40671453522220063,
+          "AC": 0.32889578886085774,
+          "TLE": 0.11441878517368523,
+          "CE": 0.06008150591888221,
+          "REG": 0.0427323888996701,
+          "PE": 0.03136037259848632,
+          "REP": 0.005957694546865904,
+          "MLE": 0.005627789637104599,
+          "OE": 0.003939452745973219,
+          "IFNR": 0.00027168639627401516
         },
         "binary_distribution": {
-          "0": 0.6478150381184912,
-          "1": 0.3521849618815088
+          "0": 0.6711042111391422,
+          "1": 0.32889578886085774
         },
         "outcome_group_distribution": {
-          "runtime_error": 0.5367094634621666,
-          "accepted": 0.3521849618815088,
-          "compile_error": 0.10623903089895416,
-          "other": 0.004866543757370405
+          "runtime_error": 0.56206093537745,
+          "accepted": 0.32889578886085774,
+          "compile_error": 0.1028138948185523,
+          "other": 0.006229380943139918
         },
-        "avg_sequence_length": 150.0174418604651,
-        "median_sequence_length": 197.0,
-        "min_sequence_length": 20,
+        "avg_sequence_length": 42.79900332225914,
+        "median_sequence_length": 31.0,
+        "min_sequence_length": 1,
         "max_sequence_length": 200
       },
       "val": {
-        "total_submissions": 38099,
+        "total_submissions": 11376,
         "unique_students": 258,
-        "unique_problems": 633,
+        "unique_problems": 538,
         "outcome_distribution": {
-          "WA": 0.40581117614635553,
-          "AC": 0.35457623559673485,
-          "TLE": 0.08750885850022311,
-          "CE": 0.06496233496942178,
-          "REG": 0.04112968844326623,
-          "PE": 0.03354418751148324,
-          "REP": 0.004645791228116224,
-          "OE": 0.004094595658678706,
-          "MLE": 0.00372713194572036
+          "WA": 0.4097222222222222,
+          "AC": 0.3373769338959212,
+          "TLE": 0.1024085794655415,
+          "CE": 0.05819268635724332,
+          "REG": 0.04535864978902954,
+          "PE": 0.02979957805907173,
+          "MLE": 0.006065400843881856,
+          "OE": 0.0058016877637130804,
+          "REP": 0.005274261603375527
         },
         "binary_distribution": {
-          "0": 0.6454237644032652,
-          "1": 0.35457623559673485
+          "0": 0.6626230661040787,
+          "1": 0.3373769338959212
         },
         "outcome_group_distribution": {
-          "runtime_error": 0.534685949762461,
-          "accepted": 0.35457623559673485,
-          "compile_error": 0.106092023412688,
-          "other": 0.004645791228116224
+          "runtime_error": 0.5537974683544303,
+          "accepted": 0.3373769338959212,
+          "compile_error": 0.10355133614627285,
+          "other": 0.005274261603375527
         },
-        "avg_sequence_length": 147.6705426356589,
-        "median_sequence_length": 197.0,
-        "min_sequence_length": 20,
+        "avg_sequence_length": 44.093023255813954,
+        "median_sequence_length": 32.0,
+        "min_sequence_length": 1,
         "max_sequence_length": 200
       },
       "test": {
-        "total_submissions": 38357,
+        "total_submissions": 29860,
         "unique_students": 258,
-        "unique_problems": 652,
+        "unique_problems": 561,
         "outcome_distribution": {
-          "WA": 0.3981020413483849,
-          "AC": 0.350731287639805,
-          "TLE": 0.08355710822014235,
-          "CE": 0.08100216388142972,
-          "REG": 0.043903329248898504,
-          "PE": 0.03125896185833094,
-          "REP": 0.004875250932033267,
-          "OE": 0.003363141017284981,
-          "MLE": 0.003102432411293897,
-          "IFNR": 0.00010428344239643351
+          "WA": 0.39611520428667113,
+          "AC": 0.3588077695914267,
+          "CE": 0.08663764233087742,
+          "TLE": 0.07431346282652378,
+          "REG": 0.04259879437374414,
+          "PE": 0.03298727394507703,
+          "REP": 0.003918285331547221,
+          "OE": 0.002880107166778299,
+          "MLE": 0.0017414601473543202
         },
         "binary_distribution": {
-          "0": 0.649268712360195,
-          "1": 0.350731287639805
+          "0": 0.6411922304085733,
+          "1": 0.3588077695914267
         },
         "outcome_group_distribution": {
-          "runtime_error": 0.5193836848554371,
-          "accepted": 0.350731287639805,
-          "compile_error": 0.12490549313032823,
-          "other": 0.0049795343744297
+          "runtime_error": 0.5080375083724046,
+          "accepted": 0.3588077695914267,
+          "compile_error": 0.12923643670462157,
+          "other": 0.003918285331547221
         },
-        "avg_sequence_length": 148.6705426356589,
-        "median_sequence_length": 180.0,
-        "min_sequence_length": 21,
+        "avg_sequence_length": 115.73643410852713,
+        "median_sequence_length": 123.0,
+        "min_sequence_length": 1,
         "max_sequence_length": 200
       }
     }
