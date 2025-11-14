@@ -1,0 +1,7 @@
+{
+  "compilation_auc": 0.7529637682524728,
+  "compilation_accuracy": 0.9274130149949047,
+  "compilation_f1": 0.5810868980309171,
+  "execution_accuracy": 0.6196577170670435,
+  "execution_f1": 0.41439447430131465
+}

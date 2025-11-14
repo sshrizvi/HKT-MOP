@@ -1,0 +1,25 @@
+# HKT Model Configuration
+
+data:
+  hierarchical_format_dir: "data/processed"
+
+model:
+  embedding_dim: 128
+  hidden_dim: 256
+  num_layers: 2
+  dropout: 0.3
+  use_attention: false  # Set to true to enable attention mechanism
+
+training:
+  batch_size: 32
+  num_epochs: 50
+  learning_rate: 0.001
+  weight_decay: 0.00001
+  early_stopping_patience: 10
+  
+  # Hierarchical loss weights
+  lambda_compilation: 1.0
+  lambda_execution: 1.0
+  adaptive_weighting: true  # Adapts execution weight based on data distribution
+  
+  results_dir: "experiments/results/hierarchical"
