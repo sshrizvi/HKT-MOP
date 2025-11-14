@@ -1,0 +1,16 @@
+================================================================================
+HIERARCHICAL FORMAT ADAPTER - FILTERING REPORT
+================================================================================
+
+Total submissions processed: 29860
+System errors filtered: 1389
+Valid submissions: 28471
+
+Valid outcome distribution:
+  WA: 11828 (41.54%)
+  AC: 10714 (37.63%)
+  CE: 2587 (9.09%)
+  TLE: 2219 (7.79%)
+  PE: 985 (3.46%)
+  OE: 86 (0.30%)
+  MLE: 52 (0.18%)
