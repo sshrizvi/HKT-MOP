@@ -9,6 +9,7 @@ data/raw/
 # Processed Data
 data/processed/*.pkl
 data/processed/dkt_format
+data/processed/hierarchical_format/*.pkl
 
 # Logs
 logs/
