@@ -321,7 +321,7 @@ class BasePreprocessor:
 
     def _map_outcome_group(self, result: str) -> str:
         """Map result to hierarchical outcome group."""
-        
+
         outcome_groups = self.config["outcomes"]["multi_outcome_groups"]
 
         for group_name, results in outcome_groups.items():
@@ -399,7 +399,8 @@ class BasePreprocessor:
 
         # Domain shift split (if enabled)
         if self.config["domain_shift"]["enabled"]:
-            splits['domain_shift'] = self._create_domain_shift_split(sequences_df)
+            splits['domain_shift'] = self._create_domain_shift_split(
+                sequences_df)
 
         return splits
 
@@ -423,8 +424,10 @@ class BasePreprocessor:
         test_ratio = split_config["test_ratio"]
 
         # Filter Daily Submissions
-        daily_unique_students = sequences_df[sequences_df['contest_id'].isna()]['creator_id'].unique()
-        contests_unique_students = sequences_df[sequences_df['contest_id'].notna()]['creator_id'].unique()
+        daily_unique_students = sequences_df[sequences_df['contest_id'].isna(
+        )]['creator_id'].unique()
+        contests_unique_students = sequences_df[sequences_df['contest_id'].notna(
+        )]['creator_id'].unique()
 
         # Train & Validation Splits
         train_students, val_students = train_test_split(
@@ -447,15 +450,17 @@ class BasePreprocessor:
             val_students) & sequences_df['contest_id'].isna()].copy()
         test_df = sequences_df[sequences_df['creator_id'].isin(
             test_students) & sequences_df['contest_id'].notna()].copy()
-        
+
         # Check for Valid Domain Shift Split
         if train_df['contest_id'].notna().sum() != 0:
-            self.logger.warning(f"Training Split Contains Contest Submissions.")
+            self.logger.warning(
+                f"Training Split Contains Contest Submissions.")
         if val_df['contest_id'].notna().sum() != 0:
-            self.logger.warning(f"Validation Split Contains Contest Submissions.")
+            self.logger.warning(
+                f"Validation Split Contains Contest Submissions.")
         if test_df['contest_id'].isna().sum() != 0:
             self.logger.warning(f"Testing Split Contains Daily Submissions.")
-            
+
         # Store Splits
         splits = {
             'train': train_df,

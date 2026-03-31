@@ -1,0 +1,26 @@
+name: hktmop
+channels:
+  - defaults
+  - https://repo.anaconda.com/pkgs/main
+  - https://repo.anaconda.com/pkgs/r
+  - https://repo.anaconda.com/pkgs/msys2
+dependencies:
+  - python==3.12.9
+  - sqlalchemy
+  - pyyaml
+  - mysql-connector-python==9.3.0
+  - pymysql
+  - mysqlclient
+  - numpy
+  - pandas
+  - scikit-learn
+  - tqdm
+  - conda-forge::dvc
+  - mlflow
+  - pytorch
+  - pytorch-cuda=12.1
+  - torchaudio
+  - torchvision
+  - streamlit
+  - plotly
+prefix: C:\Users\shuja\anaconda3\envs\hktmop
